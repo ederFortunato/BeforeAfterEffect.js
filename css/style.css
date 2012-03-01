@@ -1,0 +1,62 @@
+
+
+.center{
+	width:520px;
+	margin: auto;
+	position: relative;
+}
+ 
+
+
+.BeforeAfterEffect{
+	position: relative;
+}
+
+.BeforeAfterEffect .capB {
+	float: right;
+	position: relative;	
+}
+.BeforeAfterEffect .capA {
+	float: left;
+	position: absolute;
+}
+.BeforeAfterEffect .capA, .capB {
+	font-family: Arial, "MS Trebuchet", sans-serif;
+	font-size: 12px;
+	color: #333;
+	white-space: nowrap;
+	top: 20px;
+	margin: 0px 1px;
+	padding: 3px 13px;
+	background: #FFF;
+	border: #aaa 1px solid;
+}
+.BeforeAfterEffect .lineDivisor {
+	width: 2px;
+	background: #FFF;
+	height: 100px;
+}
+.BeforeAfterEffect .hoverDivisor {
+	width: 32px;
+	height: 21px;
+	left: 200px;
+	background: url('../img/seta.png') no-repeat;
+	position: absolute;
+	cursor: pointer;
+}
+.BeforeAfterEffect .hoverDivisor:hover {
+	cursor: move;
+}
+.BeforeAfterEffect img, .BeforeAfterEffect div {
+	position: absolute;
+	overflow: hidden;
+}
+.BeforeAfterEffect img, .BeforeAfterEffect div, .BeforeAfterEffect span{ 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
