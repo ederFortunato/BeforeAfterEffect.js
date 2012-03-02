@@ -1,13 +1,3 @@
-
-
-.center{
-	width:520px;
-	margin: auto;
-	position: relative;
-}
- 
-
-
 .BeforeAfterEffect{
 	position: relative;
 }
@@ -31,20 +21,28 @@
 	background: #FFF;
 	border: #aaa 1px solid;
 }
+
 .BeforeAfterEffect .lineDivisor {
 	width: 2px;
+	height: 2px;
 	background: #FFF;
-	height: 100px;
 }
-.BeforeAfterEffect .hoverDivisor {
+.BeforeAfterEffect .hoverDivisorH {
 	width: 32px;
 	height: 21px;
-	left: 200px;
-	background: url('../img/seta.png') no-repeat;
+	background: url('../img/setaH.png') no-repeat;
 	position: absolute;
 	cursor: pointer;
 }
-.BeforeAfterEffect .hoverDivisor:hover {
+.BeforeAfterEffect .hoverDivisorV {
+	width: 21px;
+	height: 32px;
+	background: url('../img/setaV.png') no-repeat;
+	position: absolute;
+	cursor: pointer;
+}
+
+.BeforeAfterEffect .hoverDivisorH:hover, .BeforeAfterEffect .hoverDivisorV:hover {
 	cursor: move;
 }
 .BeforeAfterEffect img, .BeforeAfterEffect div {

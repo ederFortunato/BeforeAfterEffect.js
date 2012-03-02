@@ -7,14 +7,13 @@
 
 ;(function ( $, window, document, undefined ) {
             
-    // Create the defaults once
     var pluginName = 'BeforeAfterEffect',
         defaults = {
              width:100,
-             height:100 
+             height:100, 
+             orientation:'H' 
         };       
 
-    // The actual plugin constructor
     function BeforeAfterEffect( element, options ) {
 
         this.element = element;
@@ -22,8 +21,9 @@
         this.divisor = null, 
         this.newDiv  = null;
 
-        this.options = $.extend( {}, defaults, options) ;
-        
+        this.options = $.extend( {}, defaults, options) ;        
+        this.options.orientation = this.options.orientation === 'H' ? this.options.orientation : 'V';     
+
         this._defaults = defaults;
         this._name = pluginName;
         
@@ -37,15 +37,16 @@
                 _elem	= $(this.element),          
                 _w      = this.options.width, 
                 _h      = this.options.height,
+                _ori    = this.options.orientation,
             	imgA 	= _elem.find('img').eq(0),
             	imgB 	= _elem.find('img').eq(1),
-                captionA=  $('<span></span>'), 
-                captionB=  $('<span></span>'); 
+                captionA=  $('<span class="capA"></span>'), 
+                captionB=  $('<span class="capB"></span>'); 
 
-            this.line     = $('<div></div>');
-            this.divisor  = $('<div></div>');
+            this.line     = $('<div class="lineDivisor"></div>');
+            this.divisor  = $('<div class="hoverDivisor'+_ori+'"></div>');
             this.newDiv   = $('<div></div>');
-              
+            
     		_elem.addClass('BeforeAfterEffect')
                  .width(_w)
                  .height(_h)
@@ -54,31 +55,38 @@
                  .append(this.line)  
                  .append(this.divisor);
 
-             
-
-            this.divisor.addClass('hoverDivisor')
-                   .css({top: _h / 2});
-
-            captionA.addClass('capA')
-                    .html(imgA.attr('alt'));
-
-            captionB.addClass('capB')
-                    .html(imgB.attr('alt'));
-
-            this.line.addClass('lineDivisor')           
-                .height(_h);
-
             this.newDiv.append(imgA)
-                  .append(captionA)
-                  .height(_h);                      
-     
-            _elem.bind('mousedown', function(e){
-               _this.setPosition(e.pageX - _elem.offset().left, true);
-            });
+                       .append(captionA);
 
-            addDragDrop(this.divisor, {limitX: _w, onMove: $.proxy(this, 'setPosition')});        
+            captionA.html(imgA.attr('alt'));
+
+            captionB.html(imgB.attr('alt'));
+
+
+            if(_ori == 'H'){
+                this.divisor.css({top: _h / 2});
+                this.line.height(_h);
+                this.newDiv.height(_h);  
+            }else{
+                this.divisor.css({left: _w / 2});
+                this.line.width(_w);
+                this.newDiv.width(_w);
+                log(_h , captionB.height() , captionB.css('top').replace('px', ''))
+                captionB.css('top', _h - (captionB.height()+ parseInt(captionB.css('top').replace('px', ''))));
+            }
+
+            _elem.bind('mousedown', function(e){
+                _this.setPosition({
+                        x: e.pageX - _elem.offset().left, 
+                        y: e.pageY - _elem.offset().top
+                    },
+                    true
+                );                
+            });
             
-            this.setPosition(_w / 2);
+            addDragDrop(this.divisor, {limitX: _w, limitY: _h, onMove: $.proxy(this, 'setPosition')});
+
+            this.setPosition({y: _h / 2, x: _w / 2});  
 
             // hack for IE       
             this.divisor.attr('unselectable', 'on');
@@ -86,29 +94,53 @@
             _elem.attr('onselectstart', 'return false;');
 
         },
-        setPosition : function (p, isAnimate){
-        
-            if(isAnimate){           
-                this.newDiv.stop().animate({width: p }, 500);
-                this.divisor.stop().animate({left: p - (this.divisor.width() / 2)}, 500);
-                this.line.stop().animate({left: p - (this.line.width() / 2) }, 500);
-            }else{            
-                this.newDiv.width( p );
-                this.divisor.css('left', p - (this.divisor.width() / 2));  
-                this.line.css('left', p - (this.line.width() / 2) );
+        setPosition : function (p, isAnimate){    
+            var t = 500;
+            if(this.options.orientation == 'H'){  
+                if(isAnimate){           
+                    this.newDiv.stop().animate({width: p.x }, t);
+                    this.divisor.stop().animate({left: p.x - (this.divisor.width() / 2)}, t);
+                    this.line.stop().animate({left: p.x - (this.line.width() / 2) }, t);
+                }else{
+                    this.newDiv.css('width', p.x );
+                    this.divisor.css('left', p.x - (this.divisor.width() / 2));  
+                    this.line.css('left', p.x - (this.line.width() / 2) );
+                }
+            }else{
+                 if(isAnimate){           
+                    this.newDiv.stop().animate({height: p.y }, t);
+                    this.divisor.stop().animate({top: p.y - (this.divisor.height() / 2)}, t);
+                    this.line.stop().animate({top: p.y - (this.line.height() / 2) }, t);
+                }else{ 
+                      
+                    this.newDiv.css('height', p.y );
+                    this.divisor.css('top', p.y - (this.divisor.height() / 2));  
+                    this.line.css('top', p.y - (this.line.height() / 2) );
+                }
             }
         }
     };
 
     function addDragDrop (me, opts) {
         var handler = $(me),
-            ps = $.extend({ limitX: 1000, onMove: function(){}, onDrop: function(){} }, opts),
+            ps = $.extend({
+                    limitX: 1000,
+                    limitY: 1000,
+                    onMove: function(){},
+                    onDrop: function(){}
+                },
+                opts
+            ),
             dragndrop = {
                 drag: function(e) {
                     var dragData = e.data.dragData,
-                        targetX  =  dragData.left + (e.pageX - dragData.offLeft) + dragData.limitMin - dragData.hoverLeft ;
-                    
-                    dragData.onMove(Math.min(dragData.limitMax, Math.max(0, targetX) ) );
+                        targetX  = dragData.left + (e.pageX - dragData.offLeft) + dragData.limitMinX - dragData.hoverLeft,
+                        targetY  = dragData.top  + (e.pageY - dragData.offTop)  + dragData.limitMinY - dragData.hoverTop,
+                        pTarget  = {
+                            x: Math.min(dragData.limitMaxX, Math.max(0, targetX)),
+                            y: Math.min(dragData.limitMaxY, Math.max(0, targetY))
+                        }
+                    dragData.onMove(pTarget);
                 },
                 drop: function(e) {
                     var dragData = e.data.dragData;
@@ -118,30 +150,31 @@
                 }
             };        
  
-        handler.bind('mousedown', { e: me }, function(s) {
+        handler.bind('mousedown', function(s) {
             s.stopPropagation();
 
-            var target = $(s.data.e);
+            var target = $(this);
 
             target.getCss = function (key) {
                 var v = parseInt(this.css(key));
                 if (isNaN(v))
                     return false;
                 return v;
-            } 
- 
+            }  
 
             var dragData = {
                 left: target.getCss('left') || 0,
-                top:target.getCss('left') || 0,
+                top:target.getCss('top') || 0,
                 hoverLeft: s.layerX || s.offsetX,
                 hoverTop: s.layerY || s.offsetY,
                 offLeft: target.offset().left ,
                 offTop: target.offset().top ,
                 onMove: ps.onMove,
                 onDrop: ps.onDrop,                
-                limitMin: (target.width() / 2 ),
-                limitMax: ps.limitX  ,
+                limitMinX: (target.width() / 2 ),
+                limitMinY: (target.height() / 2 ),
+                limitMaxX: ps.limitX,
+                limitMaxY: ps.limitY,
                 target: target
             }
 
