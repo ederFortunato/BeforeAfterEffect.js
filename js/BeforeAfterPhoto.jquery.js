@@ -62,17 +62,11 @@
 
             captionB.html(imgB.attr('alt'));
 
-
-            if(_ori == 'H'){
-                this.divisor.css({top: _h / 2});
+            if(_ori == 'H'){              
                 this.line.height(_h);
-                this.newDiv.height(_h);  
-            }else{
-                this.divisor.css({left: _w / 2});
+            }else{               
                 this.line.width(_w);
-                this.newDiv.width(_w);
-                log(_h , captionB.height() , captionB.css('top').replace('px', ''))
-                captionB.css('top', _h - (captionB.height()+ parseInt(captionB.css('top').replace('px', ''))));
+                captionB.css('top', _h - (captionB.height() + parseInt(captionB.css('top').replace('px', ''))));
             }
 
             _elem.bind('mousedown', function(e){
@@ -84,10 +78,14 @@
                 );                
             });
             
-            addDragDrop(this.divisor, {limitX: _w, limitY: _h, onMove: $.proxy(this, 'setPosition')});
+            addDragDrop(this.divisor, { 
+                                        limitX: _w,
+                                        limitY: _h,
+                                        onMove: $.proxy(this, 'setPosition')
+                                      });
 
-            this.setPosition({y: _h / 2, x: _w / 2});  
-
+            this.setPosition({y: _h / 2, x: _w / 2});
+            
             // hack for IE       
             this.divisor.attr('unselectable', 'on');
             // hack for chrome
@@ -96,27 +94,25 @@
         },
         setPosition : function (p, isAnimate){    
             var t = 500;
+
             if(this.options.orientation == 'H'){  
-                if(isAnimate){           
-                    this.newDiv.stop().animate({width: p.x }, t);
-                    this.divisor.stop().animate({left: p.x - (this.divisor.width() / 2)}, t);
-                    this.line.stop().animate({left: p.x - (this.line.width() / 2) }, t);
-                }else{
-                    this.newDiv.css('width', p.x );
-                    this.divisor.css('left', p.x - (this.divisor.width() / 2));  
-                    this.line.css('left', p.x - (this.line.width() / 2) );
-                }
+                p.y = this.options.height / 2;
+                p.xG = p.x;
+                p.yG = p.y * 2;                        
+            }else{ 
+                p.x = this.options.width / 2;
+                p.xG = p.x * 2;
+                p.yG = p.y;
+           }
+
+            if(isAnimate){           
+                this.newDiv.stop().animate({ width: p.xG  , height: p.yG  }, t);
+                this.divisor.stop().animate({ left: p.x - (this.divisor.width() / 2), top: p.y - (this.divisor.height() / 2) }, t);
+                this.line.stop().animate({ left: p.x - (this.line.width() / 2) , top: p.y - (this.line.height() / 2) }, t);
             }else{
-                 if(isAnimate){           
-                    this.newDiv.stop().animate({height: p.y }, t);
-                    this.divisor.stop().animate({top: p.y - (this.divisor.height() / 2)}, t);
-                    this.line.stop().animate({top: p.y - (this.line.height() / 2) }, t);
-                }else{ 
-                      
-                    this.newDiv.css('height', p.y );
-                    this.divisor.css('top', p.y - (this.divisor.height() / 2));  
-                    this.line.css('top', p.y - (this.line.height() / 2) );
-                }
+                this.newDiv.css({ width: p.xG  , height: p.yG });
+                this.divisor.css({ left: p.x - (this.divisor.width() / 2), top: p.y - (this.divisor.height() / 2) });  
+                this.line.css({ left: p.x - (this.line.width() / 2) , top: p.y - (this.line.height() / 2) });  
             }
         }
     };
