@@ -1,27 +1,24 @@
 .BeforeAfterEffect{
 	position: relative;
 }
-
 .BeforeAfterEffect .capB {
 	float: right;
-	position: relative;	
+	position: relative;
 }
 .BeforeAfterEffect .capA {
 	float: left;
 	position: absolute;
 }
 .BeforeAfterEffect .capA, .capB {
-	font-family: Arial, "MS Trebuchet", sans-serif;
 	font-size: 12px;
 	color: #333;
 	white-space: nowrap;
 	top: 20px;
-	margin: 0px 1px;
+	margin: 0 1px;
 	padding: 3px 13px;
 	background: #FFF;
 	border: #aaa 1px solid;
 }
-
 .BeforeAfterEffect .lineDivisor {
 	width: 2px;
 	height: 2px;
@@ -41,7 +38,6 @@
 	position: absolute;
 	cursor: pointer;
 }
-
 .BeforeAfterEffect .hoverDivisorH:hover, .BeforeAfterEffect .hoverDivisorV:hover {
 	cursor: move;
 }
@@ -49,12 +45,10 @@
 	position: absolute;
 	overflow: hidden;
 }
-.BeforeAfterEffect img, .BeforeAfterEffect div, .BeforeAfterEffect span{ 
+.BeforeAfterEffect img, .BeforeAfterEffect div, .BeforeAfterEffect span{
 	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
 	user-select: none;
 }
