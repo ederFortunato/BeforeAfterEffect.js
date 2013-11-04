@@ -53,3 +53,6 @@ Built on top of [jQuery Boilerplate](http://jqueryboilerplate.com).
 ## License
 
 [MIT License](http://opensource.org/licenses/MIT)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ederFortunato/beforeaftereffect.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
