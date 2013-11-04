@@ -1,0 +1,30 @@
+{
+  "name": "BeforeAfterEffect",
+  "title": "Before and After Effect JQuery Plugin",
+  "description": "JQuery plugin for compare effect of before and after two images.",
+  "keywords": [
+    "jquery",
+    "effect",
+    "image",
+    "plugins"
+  ],
+  "version": "1.0.0",
+  "author": {
+    "name": "Eder Fortunato",
+    "email": "eder.fortunato@gmail.com",
+    "url": "https://github.com/ederFortunato"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "bugs": "https://github.com/ederFortunato/BeforeAfterEffect.js/issues",
+  "homepage": "https://github.com/ederFortunato/BeforeAfterEffect.js",
+  "docs": "https://github.com/ederFortunato/BeforeAfterEffect.js#readme",
+  "download": "https://github.com/ederFortunato/BeforeAfterEffect.js/archive/master.zip",
+  "dependencies": {
+    "jquery": ">=2.0"
+  }
+}
